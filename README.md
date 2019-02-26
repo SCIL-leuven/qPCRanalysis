@@ -3,9 +3,10 @@ Easy calculation of Delta CT and Delta Delta CT
 
 ## Install
 
-  `install.packages(c("devtools", "readxl", "tidyr", "dplyr", "lazyeval"))`
-
-  `devtools::install_github("SCIL-leuven/qPCRanalysis")`
+```
+install.packages(c("devtools", "readxl", "tidyr", "dplyr", "lazyeval"))
+devtools::install_github("SCIL-leuven/qPCRanalysis")
+```
 
 ## Load packages
 
