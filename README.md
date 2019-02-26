@@ -34,10 +34,10 @@ Sample 3    | Gene 3    | 18.98
 ### Calculate Delta CT
 
 To calculate delta CT we use the `calculate_DCT()` function. This function requires four arguments:
--df : dataframe structured like the proposed data file
--hkg : name of housekeeping gene or genes that you want to use to normalize against
--sample_col : name of the sample column
--gene_col : name of the gene column
+- df : dataframe structured like the proposed data file
+- hkg : name of housekeeping gene or genes that you want to use to normalize against
+- sample_col : name of the sample column
+- gene_col : name of the gene column
 
 It will pass a dataframe with two added columns: the Delta CT (DCT column) and the relative expression to hkg (RE column)
 
