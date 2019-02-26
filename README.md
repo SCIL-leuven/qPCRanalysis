@@ -69,7 +69,10 @@ It will pass a dataframe with three added columns:
 * __RE__ : relative expression to hkg
 
 ```
-qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col = "Sample", gene_col = "Target")
+qpcr <- calculate_DCT(df = qpcr, 
+                      hkg = c("Rab35", "Rpl13a", "PSma3"), 
+                       sample_col = "Sample", 
+                       gene_col = "Target")
 ```
 ```
 ## # A tibble: 264 x 7
@@ -109,7 +112,11 @@ It will pass a dataframe with seven added columns
 * __DDCTmax__ : maximum sem value
 
 ```
-qpcr <- calculate_DDCT(df = qpcr, gene_col = "Target", sample_col = "Sample", var = "Genotype", control = "Healthy")
+qpcr <- calculate_DDCT(df = qpcr, 
+                        gene_col = "Target", 
+                         sample_col = "Sample", 
+                         var_col = "Genotype", 
+                         control = "Healthy")
 head(qpcr)
 ```
 ```
