@@ -22,24 +22,23 @@ Installation of this package
 Import all the raw data as an excel file without any selections. We are only interested in the results, that is the third sheet. In the basic template on the Viia7, genes are **Targets** and samples **Samples**. You can find them under the Sample Name and Target Name column.
 
 
-Well | Well Position | Sample Name | Target Name | CT  
------|---------------|-------------|-------------|----
-1    | A1            | Sample 1    | Gene 1    | 21.23  
-2    | A2            | Sample 2    | Gene 1    | 24.48  
-3    | A3            | Sample 1    | Gene 2    | 18.98   
+Sample | Target | CT  
+-------|--------|----
+Sample 1    | Gene 1    | 21.23  
+Sample 2    | Gene 2    | 24.48  
+Sample 3    | Gene 3    | 18.98   
 
-
-## Annotation file
-
-To plot groups, you need to create an annotation file (this is the easiest to do in excel but it can also be a .csv or .txt file). Here is an example of how it should look:
-
-Sample Name | Condition | Mouse | ...
-----------|-----------|-----------|------
-Sample 1  | healthy   | a  | ...
-Sample 2  | healthy | b  | ...
-Sample 3  | diseased | a | ...
 
 ## Workflow
 
-1. Delta CT
+### Calculate Delta CT
+
+To calculate delta CT we use the `calculate_DCT()` function. This function requires four arguments:
+-df : dataframe structured like the proposed data file
+-hkg : name of housekeeping gene or genes that you want to use to normalize against
+-sample_col : name of the sample column
+-gene_col : name of the gene column
+
+It will pass a dataframe with two added columns: the Delta CT (DCT column) and the relative expression to hkg (RE column)
+
 2. Delta Delta CT
