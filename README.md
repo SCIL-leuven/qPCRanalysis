@@ -122,7 +122,7 @@ It will pass a dataframe with four added columns
 - **DDCTmax** : maximum sem value
 
 ```
-qpcr <- calculate_fold_change(df = qpcr, gene_col = "Target", sample_col = "Sample", var = "Celltype", control = "Fibroblast")
+qpcr <- calculate_DDCT(df = qpcr, gene_col = "Target", sample_col = "Sample", var = "Celltype", control = "Fibroblast")
 ```
 
 ## Examples
