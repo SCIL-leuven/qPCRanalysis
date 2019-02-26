@@ -17,7 +17,7 @@ Installation of this package
 
   `devtools::install_github("SCIL-leuven/qPCRanalysis")`
 
-### Load packages
+## Load packages
 
 ```
 library(readxl)
@@ -29,7 +29,7 @@ library(ggpubr)
 library(lazyeval)
 ```
 
-### Load data
+## Load data
 We load the data with the `read_excel()` function of the readxl package. The data should consist of at least 4 columns:
 
 * __Sample__ : invidividual names per sample
@@ -54,7 +54,7 @@ head(qpcr)
 ## 6 WT1    Healthy  Ccl6    29.7
 ```
 
-### Calculate Delta CT
+## Calculate Delta CT
 To calculate delta CT we use the `calculate_DCT()` function. This function requires four arguments:
 
 * __df__ : dataframe structured like the proposed data file
@@ -89,7 +89,7 @@ qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col
 ## # ... with 254 more rows
 ```
 
-### Calculate Delta Delta CT
+## Calculate Delta Delta CT
 To calculate Delta Delta CT use the `calculate_DDCT()` function. This function  can only be run after the `calculate_DCT()` function is used and requires five argeuments:
 
 * __df__: dataframe structured like the proposed data file, has to contain DCT and RE column
