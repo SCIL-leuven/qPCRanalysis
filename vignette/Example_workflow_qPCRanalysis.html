@@ -277,7 +277,7 @@ head(qpcr)</code></pre>
 <li><strong>DDCTmin</strong> : minimum sem value</li>
 <li><strong>DDCTmax</strong> : maximum sem value</li>
 </ul>
-<pre class="r"><code>qpcr &lt;- calculate_DDCT(df = qpcr, gene_col = &quot;Target&quot;, sample_col = &quot;Sample&quot;, var = &quot;Genotype&quot;, control = &quot;Healthy&quot;)
+<pre class="r"><code>qpcr &lt;- calculate_DDCT(df = qpcr, gene_col = &quot;Target&quot;, sample_col = &quot;Sample&quot;, var_col = &quot;Genotype&quot;, control = &quot;Healthy&quot;)
 head(qpcr)</code></pre>
 <pre><code>## # A tibble: 6 x 9
 ##   Target Genotype  DCTavg DCTsem DCTsemperc DDCTavg DDCTsem DDCTmin DDCTmax

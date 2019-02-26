@@ -72,7 +72,7 @@ It will pass a dataframe with seven added columns
 * __DDCTmax__ : maximum sem value
 
 ```{r}
-qpcr <- calculate_DDCT(df = qpcr, gene_col = "Target", sample_col = "Sample", var = "Genotype", control = "Healthy")
+qpcr <- calculate_DDCT(df = qpcr, gene_col = "Target", sample_col = "Sample", var_col = "Genotype", control = "Healthy")
 head(qpcr)
 ```
 
