@@ -1,19 +1,9 @@
 # qPCRanalysis
-Functions for easy analysis of qPCR data
-
-## WHY USE THIS PACKAGE
-* Easy to use
-* Calculate delta CT and delta delta CT
-
-## Requirements
-
-Install these packages in Rstudio:
-
-  `install.packages(c("devtools", "tidyverse", "lazyeval"))`
+Easy calculation of Delta CT and Delta Delta CT
 
 ## Install
 
-Installation of this package
+  `install.packages(c("devtools", "tidyverse", "lazyeval"))`
 
   `devtools::install_github("SCIL-leuven/qPCRanalysis")`
 
