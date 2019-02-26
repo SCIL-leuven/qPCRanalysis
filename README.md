@@ -2,7 +2,7 @@
 Functions for easy analysis of qPCR data
 
 ## WHY USE THIS PACKAGE
-* Simplified workflow
+* Easy to use
 * Calculate delta CT and delta delta CT
 
 ## Requirements
