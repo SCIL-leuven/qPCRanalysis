@@ -3,7 +3,7 @@ Easy calculation of Delta CT and Delta Delta CT
 
 ## Install
 
-  `install.packages(c("devtools", "tidyverse", "lazyeval"))`
+  `install.packages(c("devtools", "readxl", "tidyr", "dplyr", "lazyeval"))`
 
   `devtools::install_github("SCIL-leuven/qPCRanalysis")`
 
@@ -13,9 +13,7 @@ Easy calculation of Delta CT and Delta Delta CT
 library(readxl)
 library(tidyr)
 library(dplyr)
-library(ggplot2)
 library(qPCRanalysis)
-library(ggpubr)
 library(lazyeval)
 ```
 
