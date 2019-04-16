@@ -18,12 +18,9 @@ library(ggplot2)
 library(qPCRanalysis)
 library(ggpubr)
 library(lazyeval)
-<<<<<<< HEAD
 library(broom)
 library(purrr)
 library(WriteXLS)
-=======
->>>>>>> d7c123854f50fd7e913dceb2b541922fad9c01f1
 ```
 
 ## Load data
@@ -35,7 +32,6 @@ We load the data with the **read_excel()** function of the readxl package. The d
 * __CT__ : the raw CT values
 
 ```{r message=FALSE, warning=FALSE}
-<<<<<<< HEAD
 qpcr <- read_excel("qPCR_data.xlsx", col_names = TRUE, sheet = 3, skip = 35)
 head(qpcr)
 ```
@@ -58,11 +54,9 @@ When we check the structure of the data frame we see that the CT column is not n
 ```{r}
 qpcr$CT <- as.numeric(qpcr$CT)
 str(qpcr)
-=======
 qpcr <- read_excel("qPCR_data.xlsx", col_names = TRUE)
 qpcr$CT <- as.numeric(qpcr$CT)
 head(qpcr)
->>>>>>> d7c123854f50fd7e913dceb2b541922fad9c01f1
 ```
 
 ## Calculate Delta CT
@@ -80,7 +74,6 @@ It will pass a dataframe with three added columns:
 * __RE__ : relative expression to hkg
 
 ```{r}
-<<<<<<< HEAD
 qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col = "Sample", gene_col = "Gene")
 head(qpcr)
 ```
@@ -96,9 +89,7 @@ ggplot(qpcr, aes(x = Sample, y = DCT, col = Sample)) +
 Perform statistical test between two groups and add information to qpcr data frame.
 ```{r}
 calculate_t.test(qpcr, x = "WT", y = "Sgca")
-=======
 qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col = "Sample", gene_col = "Target")
->>>>>>> d7c123854f50fd7e913dceb2b541922fad9c01f1
 ```
 
 ## Calculate Delta Delta CT
@@ -121,7 +112,6 @@ It will pass a dataframe with seven added columns
 * __DDCTmax__ : maximum sem value
 
 ```{r}
-<<<<<<< HEAD
 qpcr <- calculate_DDCT(df = qpcr, gene_col = "Gene", sample_col = "Sample", var_col = "Sample", control = "WT")
 head(qpcr)
 ```
@@ -138,10 +128,3 @@ ggplot(qpcr, aes(x = Sample, y = DDCTavg, fill = Sample)) +
 ```{r}
 
 ```
-
-=======
-qpcr <- calculate_DDCT(df = qpcr, gene_col = "Target", sample_col = "Sample", var_col = "Genotype", control = "Healthy")
-head(qpcr)
-```
-
->>>>>>> d7c123854f50fd7e913dceb2b541922fad9c01f1
