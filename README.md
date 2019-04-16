@@ -24,7 +24,6 @@ Installation of this package
 library(readxl)
 library(tidyr)
 library(dplyr)
-<<<<<<< HEAD
 library(ggplot2)
 library(qPCRanalysis)
 library(ggpubr)
