@@ -2,17 +2,9 @@
 
 export(calculate_DCT)
 export(calculate_DDCT)
-<<<<<<< HEAD
-export(calculate_t.test)
 export(gm_mean)
 export(mutate_DDCT_avg)
 export(mutate_DDCT_sem)
-import(broom)
-=======
-export(gm_mean)
-export(mutate_DDCT_avg)
-export(mutate_DDCT_sem)
->>>>>>> d7c123854f50fd7e913dceb2b541922fad9c01f1
 import(dplyr)
 import(tidyr)
 importFrom(lazyeval,interp)

@@ -1,11 +1,7 @@
 Package: qPCRanalysis
 Type: Package
 Title: Help with qPCR analysis
-<<<<<<< HEAD
 Version: 0.2.0
-=======
-Version: 0.1.0
->>>>>>> d7c123854f50fd7e913dceb2b541922fad9c01f1
 Author: Jordi Camps
 Maintainer: Jordi Camps <jordi.camps@kuleuven.be>
 Description: More about what it does (maybe more than one line)
@@ -13,9 +9,5 @@ Description: More about what it does (maybe more than one line)
 License: MIT
 Encoding: UTF-8
 LazyData: true
-<<<<<<< HEAD
-Imports: dplyr, lazyeval, tidyr, broom
-=======
 Imports: dplyr, lazyeval, tidyr
->>>>>>> d7c123854f50fd7e913dceb2b541922fad9c01f1
 RoxygenNote: 6.1.1

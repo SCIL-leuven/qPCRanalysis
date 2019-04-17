@@ -18,17 +18,14 @@ library(ggplot2)
 library(qPCRanalysis)
 library(ggpubr)
 library(lazyeval)
-library(broom)
-library(purrr)
-library(WriteXLS)
 ```
 
 ## Load data
 We load the data with the **read_excel()** function of the readxl package. The data should consist of at least 4 columns:
 
-* __Sample__ : invidividual names per sample
-* __Variable__ : the biological variability in your data set like a disease, different timepoints, perturbation ...
-* __Target__ : the gene names of your primers
+* __Sample__ : the biological variability in your data set like a disease, different timepoints, perturbation ...
+* __Replicate__ : invidividual names per sample
+* __Gene__ : the gene names of your primers
 * __CT__ : the raw CT values
 
 ```{r message=FALSE, warning=FALSE}
@@ -50,13 +47,10 @@ qpcr <- filter(qpcr, Sample != "Blanc")
 head(qpcr)
 ```
 
-When we check the structure of the data frame we see that the CT column is not numeric, we will change this.
+When we check the structure of the data frame we see that the CT column is not numeric, we will change this. In addition, all undetermined values are switched to NA. If desired, these values can be changed to 40.
 ```{r}
 qpcr$CT <- as.numeric(qpcr$CT)
 str(qpcr)
-qpcr <- read_excel("qPCR_data.xlsx", col_names = TRUE)
-qpcr$CT <- as.numeric(qpcr$CT)
-head(qpcr)
 ```
 
 ## Calculate Delta CT
@@ -78,18 +72,19 @@ qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col
 head(qpcr)
 ```
 
+# Statistics
+Perform statistical test between two groups and add information to qpcr data frame. We will do this with the ggpubr package.
+```{r}
+stat <- compare_means(DCT ~ Sample, qpcr, method = "t.test", paired = FALSE, group.by = "Gene")
+head(stat)
+```
+
 ### Plot
 ```{r}
 ggplot(qpcr, aes(x = Sample, y = DCT, col = Sample)) +
   geom_boxplot() +
-  facet_wrap(~Gene, scales = "free_y")
-```
-
-# Statistics
-Perform statistical test between two groups and add information to qpcr data frame.
-```{r}
-calculate_t.test(qpcr, x = "WT", y = "Sgca")
-qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col = "Sample", gene_col = "Target")
+  facet_wrap(~Gene, scales = "free_y") +
+  stat_compare_means(method = "t.test", label = "p.signif", label.x = 1.5)
 ```
 
 ## Calculate Delta Delta CT
@@ -112,19 +107,21 @@ It will pass a dataframe with seven added columns
 * __DDCTmax__ : maximum sem value
 
 ```{r}
-qpcr <- calculate_DDCT(df = qpcr, gene_col = "Gene", sample_col = "Sample", var_col = "Sample", control = "WT")
-head(qpcr)
+ddct <- calculate_DDCT(df = qpcr, gene_col = "Gene", sample_col = "Sample", var_col = "Sample", control = "WT")
+head(ddct)
 ```
 
 ### Plot
 ```{r}
-ggplot(qpcr, aes(x = Sample, y = DDCTavg, fill = Sample)) +
+ggplot(ddct, aes(x = Sample, y = DDCTavg, fill = Sample)) +
   geom_col() +
-  geom_errorbar(aes(ymin = DDCTmin, ymax = DDCTmax), width = 0.1, data = qpcr) +
+  geom_errorbar(aes(ymin = DDCTmin, ymax = DDCTmax), width = 0.1, data = ddct) +
   facet_wrap(~Gene, scales = "free_y")
 ```
 
 # Export
+At any given point you can export the data frame to an excel file with this function. Here we will export the data in an excel with three sheets. The first sheet will contain your raw values and normalized delta CT values. The second sheet will contain your statistics. The third sheet will contain all the values normalized to your control group.
 ```{r}
-
+library(WriteXLS)
+WriteXLS(c("qpcr", "stat", "ddct"), "qpcr.xlsx")
 ```

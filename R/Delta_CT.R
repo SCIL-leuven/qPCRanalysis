@@ -20,7 +20,7 @@ gm_mean <- function(x, na.rm = TRUE) {
 #' @import dplyr
 #' @import tidyr
 #' @export
-calculate_DCT <- function(df, hkg, sample_col = "Sample", gene_col = "Target") {
+calculate_DCT <- function(df = qpcr, hkg, sample_col = "Sample", gene_col = "Gene") {
   temp <- NULL
   temp2 <- NULL
   #create df with average hkg per sample

@@ -37,7 +37,7 @@ mutate_DDCT_sem <- function(col1, col2, col3) {
 #' @importFrom stats sd setNames
 #' @importFrom utils globalVariables
 #' @export
-calculate_DDCT <- function(df = qpcr, gene_col, sample_col, var_col, control) {
+calculate_DDCT <- function(df = qpcr, gene_col = "Gene", sample_col = "Sample", var_col, control) {
   temp <- NULL
   #globalVariables(c("qpcr", "DCT", "sd", "replicates", "DCTsem", "DCTavg", "variable", "value", "setNames", "DDCTavg", "DDCTsem"))
   #Take average and standard deviation per Gene and Genotype
