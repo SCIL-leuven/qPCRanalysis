@@ -1,32 +1,22 @@
 # qPCRanalysis
-<<<<<<< HEAD
 Functions for easy analysis of qPCR data
 
 ## WHY USE THIS PACKAGE
 * Easy to use
 * Calculate delta CT and delta delta CT
+* Integrated statistics
 
 ## Requirements
 
 Install these packages in Rstudio:
 
-  `install.packages(c("devtools", "tidyverse", "lazyeval"))`
+  `install.packages(c("devtools", "tidyverse", "lazyeval", "ggpubr"))`
 
 ## Install
 
 Installation of this package
 
   `devtools::install_github("SCIL-leuven/qPCRanalysis")`
-=======
-Easy calculation of Delta CT and Delta Delta CT
-
-## Install
-
-```
-install.packages(c("devtools", "readxl", "tidyr", "dplyr", "lazyeval"))
-devtools::install_github("SCIL-leuven/qPCRanalysis")
-```
->>>>>>> d7c123854f50fd7e913dceb2b541922fad9c01f1
 
 ## Load packages
 
@@ -34,13 +24,10 @@ devtools::install_github("SCIL-leuven/qPCRanalysis")
 library(readxl)
 library(tidyr)
 library(dplyr)
-<<<<<<< HEAD
 library(ggplot2)
 library(qPCRanalysis)
 library(ggpubr)
-=======
 library(qPCRanalysis)
->>>>>>> d7c123854f50fd7e913dceb2b541922fad9c01f1
 library(lazyeval)
 ```
 
@@ -84,14 +71,7 @@ It will pass a dataframe with three added columns:
 * __RE__ : relative expression to hkg
 
 ```
-qpcr <- calculate_DCT(df = qpcr, 
-<<<<<<< HEAD
-                      hkg = c("Rab35", "Rpl13a", "PSma3"), 
-=======
-                      hkg = c("Rab35", "Rpl13a", "Psma3"), 
->>>>>>> d7c123854f50fd7e913dceb2b541922fad9c01f1
-                       sample_col = "Sample", 
-                       gene_col = "Target")
+qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col = "Sample", gene_col = "Target")
 ```
 ```
 ## # A tibble: 264 x 7
