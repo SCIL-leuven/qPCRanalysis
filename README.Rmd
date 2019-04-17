@@ -1,12 +1,12 @@
 ---
 title: "Example workflow qPCRanalysis"
 author: "Jordi Camps"
-date: "26 February 2019"
+date: '`r format(Sys.Date(), "%B %d %Y")`'
 output: rmarkdown::github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig$path = "README_figs/README-")
+```{r, echo = FALSE}
+knitr::opts_chunk$set(fig.path = "README_figs/README-")
 ```
 
 ## Load packages
@@ -29,7 +29,7 @@ We load the data with the **read_excel()** function of the readxl package. The d
 * __CT__ : the raw CT values
 
 ```{r message=FALSE, warning=FALSE}
-qpcr <- read_excel("qPCR_data.xlsx", col_names = TRUE, sheet = 3, skip = 35)
+qpcr <- read_excel("vignette/qPCR_data.xlsx", col_names = TRUE, sheet = 3, skip = 35)
 head(qpcr)
 ```
 
@@ -72,7 +72,7 @@ qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col
 head(qpcr)
 ```
 
-# Statistics
+## Statistics
 Perform statistical test between two groups and add information to qpcr data frame. We will do this with the ggpubr package.
 ```{r}
 stat <- compare_means(DCT ~ Sample, qpcr, method = "t.test", paired = FALSE, group.by = "Gene")
@@ -123,5 +123,5 @@ ggplot(ddct, aes(x = Sample, y = DDCTavg, fill = Sample)) +
 At any given point you can export the data frame to an excel file with this function. Here we will export the data in an excel with three sheets. The first sheet will contain your raw values and normalized delta CT values. The second sheet will contain your statistics. The third sheet will contain all the values normalized to your control group.
 ```{r}
 library(WriteXLS)
-WriteXLS(c("qpcr", "stat", "ddct"), "qpcr.xlsx")
+WriteXLS(c("qpcr", "stat", "ddct"), "vignette/qpcr.xlsx")
 ```
