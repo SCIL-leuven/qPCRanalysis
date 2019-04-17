@@ -10,7 +10,7 @@ Functions for easy analysis of qPCR data
 
 Install these packages in Rstudio:
 
-  `install.packages(c("devtools", "tidyverse", "lazyeval"))`
+  `install.packages(c("devtools", "tidyverse", "lazyeval", "ggpubr"))`
 
 ## Install
 
