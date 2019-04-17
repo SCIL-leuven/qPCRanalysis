@@ -16,6 +16,41 @@ if(!require(devtools)) install.packages("devtools")
 devtools::install_github("SCIL-leuven/qPCRanalysis")
 ```
 
+    ## 
+    ##   
+      
+      
+       checking for file 'C:\Users\Jordi_Camps\AppData\Local\Temp\RtmpQfXJNm\remotes10bc73403daa\SCIL-leuven-qPCRanalysis-eb69a10/DESCRIPTION' ...
+      
+       checking for file 'C:\Users\Jordi_Camps\AppData\Local\Temp\RtmpQfXJNm\remotes10bc73403daa\SCIL-leuven-qPCRanalysis-eb69a10/DESCRIPTION' ... 
+      
+    v  checking for file 'C:\Users\Jordi_Camps\AppData\Local\Temp\RtmpQfXJNm\remotes10bc73403daa\SCIL-leuven-qPCRanalysis-eb69a10/DESCRIPTION' (354ms)
+    ## 
+      
+      
+      
+    -  preparing 'qPCRanalysis': (354ms)
+    ##    checking DESCRIPTION meta-information ...
+      
+    v  checking DESCRIPTION meta-information
+    ## 
+      
+      
+      
+    -  checking for LF line-endings in source and make files and shell scripts
+    ## 
+      
+    -  checking for empty or unneeded directories
+    ## 
+      
+      
+      
+    -  building 'qPCRanalysis_0.2.0.tar.gz'
+    ## 
+      
+       
+    ## 
+
 ## Load packages
 
 ``` r
@@ -144,28 +179,28 @@ It will pass a dataframe with three added columns:
 
 ``` r
 qpcr <- calculate_DCT(df = qpcr, 
-                      hkg = c("Rab35", "Rpl13a", "PSma3"), 
+                      hkg = c("Rab35", "Rpl13a", "Psma3"), 
                       sample_col = "Sample", 
                       gene_col = "Gene")
 ```
 
     ## Joining, by = "Sample"
 
-    ## # A tibble: 242 x 7
+    ## # A tibble: 231 x 7
     ## # Groups:   Sample [2]
     ##    Sample Replicate Gene     CT CT_hkg   DCT           RE
     ##    <chr>  <chr>     <chr> <dbl>  <dbl> <dbl>        <dbl>
-    ##  1 WT     1         Tnf    33.3   13.0 -20.3  0.000000761
-    ##  2 WT     1         Il1b   34.0   13.0 -21.0  0.000000463
-    ##  3 WT     1         Ccl3   NA     13.0  NA   NA          
-    ##  4 WT     1         Ccl4   NA     13.0  NA   NA          
-    ##  5 WT     1         Ccl5   32.4   13.0 -19.5  0.00000136 
-    ##  6 WT     1         Ccl6   29.7   13.0 -16.8  0.00000904 
-    ##  7 WT     1         Ccl7   34.6   13.0 -21.7  0.000000302
-    ##  8 WT     1         Ccl8   30.5   13.0 -17.5  0.00000535 
-    ##  9 WT     1         Ccl9   29.7   13.0 -16.7  0.00000918 
-    ## 10 WT     1         Ccl12  32.3   13.0 -19.4  0.00000145 
-    ## # ... with 232 more rows
+    ##  1 WT     1         Tnf    33.3   12.8 -20.4  0.000000708
+    ##  2 WT     1         Il1b   34.0   12.8 -21.1  0.000000431
+    ##  3 WT     1         Ccl3   NA     12.8  NA   NA          
+    ##  4 WT     1         Ccl4   NA     12.8  NA   NA          
+    ##  5 WT     1         Ccl5   32.4   12.8 -19.6  0.00000127 
+    ##  6 WT     1         Ccl6   29.7   12.8 -16.9  0.00000842 
+    ##  7 WT     1         Ccl7   34.6   12.8 -21.8  0.000000281
+    ##  8 WT     1         Ccl8   30.5   12.8 -17.6  0.00000498 
+    ##  9 WT     1         Ccl9   29.7   12.8 -16.8  0.00000855 
+    ## 10 WT     1         Ccl12  32.3   12.8 -19.5  0.00000135 
+    ## # ... with 221 more rows
 
 ## Statistics
 
@@ -181,12 +216,12 @@ head(stat)
     ## # A tibble: 6 x 9
     ##   Gene  .y.   group1 group2          p    p.adj p.format p.signif method
     ##   <chr> <chr> <chr>  <chr>       <dbl>    <dbl> <chr>    <chr>    <chr> 
-    ## 1 Tnf   DCT   WT     Sgca   0.0000136  0.00012  1.4e-05  ****     T-test
-    ## 2 Il1b  DCT   WT     Sgca   0.00000243 0.000039 2.4e-06  ****     T-test
-    ## 3 Ccl3  DCT   WT     Sgca   0.000518   0.0016   0.00052  ***      T-test
-    ## 4 Ccl4  DCT   WT     Sgca   0.00204    0.0041   0.00204  **       T-test
-    ## 5 Ccl5  DCT   WT     Sgca   0.0000213  0.000150 2.1e-05  ****     T-test
-    ## 6 Ccl6  DCT   WT     Sgca   0.140      0.14     0.14021  ns       T-test
+    ## 1 Tnf   DCT   WT     Sgca   0.0000151  0.000140 1.5e-05  ****     T-test
+    ## 2 Il1b  DCT   WT     Sgca   0.00000275 0.000041 2.7e-06  ****     T-test
+    ## 3 Ccl3  DCT   WT     Sgca   0.000552   0.0017   0.00055  ***      T-test
+    ## 4 Ccl4  DCT   WT     Sgca   0.00216    0.0043   0.00216  **       T-test
+    ## 5 Ccl5  DCT   WT     Sgca   0.0000238  0.00017  2.4e-05  ****     T-test
+    ## 6 Ccl6  DCT   WT     Sgca   0.149      0.15     0.14851  ns       T-test
 
 ### Plot
 
@@ -197,9 +232,9 @@ ggplot(qpcr, aes(x = Sample, y = DCT, col = Sample)) +
   stat_compare_means(method = "t.test", label = "p.signif", label.x = 1.5)
 ```
 
-    ## Warning: Removed 26 rows containing non-finite values (stat_boxplot).
+    ## Warning: Removed 25 rows containing non-finite values (stat_boxplot).
 
-    ## Warning: Removed 26 rows containing non-finite values (stat_compare_means).
+    ## Warning: Removed 25 rows containing non-finite values (stat_compare_means).
 
 ![](README_figs/README-unnamed-chunk-10-1.png)<!-- -->
 
@@ -241,12 +276,12 @@ head(ddct)
     ## # A tibble: 6 x 9
     ##   Gene  Sample DCTavg DCTsem DCTsemperc DDCTavg  DDCTsem  DDCTmin DDCTmax
     ##   <chr> <chr>   <dbl>  <dbl>      <dbl>   <dbl>    <dbl>    <dbl>   <dbl>
-    ## 1 Ccl12 Sgca    -6.04  0.464      -7.68   7423. 645.     6779.    8068.  
-    ## 2 Ccl12 WT     -18.9   0.765      -4.05      1    0.0572    0.943    1.06
-    ## 3 Ccl17 Sgca    -8.38  0.248      -2.97   6290. 227.     6063.    6517.  
-    ## 4 Ccl17 WT     -21.0   0.430      -2.05      1    0.0289    0.971    1.03
-    ## 5 Ccl22 Sgca    -9.08  0.801      -8.82   2183. 199.     1985.    2382.  
-    ## 6 Ccl22 WT     -20.2   0.443      -2.20      1    0.0311    0.969    1.03
+    ## 1 Ccl12 Sgca    -6.34  0.464      -7.33   6513. 545.     5968.    7058.  
+    ## 2 Ccl12 WT     -19.0   0.765      -4.03      1    0.0569    0.943    1.06
+    ## 3 Ccl17 Sgca    -8.67  0.248      -2.87   5518. 194.     5324.    5713.  
+    ## 4 Ccl17 WT     -21.1   0.430      -2.04      1    0.0288    0.971    1.03
+    ## 5 Ccl22 Sgca    -9.37  0.801      -8.55   1916. 169.     1747.    2085.  
+    ## 6 Ccl22 WT     -20.3   0.443      -2.19      1    0.0309    0.969    1.03
 
 ### Plot
 
@@ -272,5 +307,3 @@ group.
 library(WriteXLS)
 WriteXLS(c("qpcr", "stat", "ddct"), "vignette/qpcr.xlsx")
 ```
-
-    ## The Perl script 'WriteXLSX.pl' failed to run successfully.
