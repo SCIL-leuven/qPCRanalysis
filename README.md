@@ -3,13 +3,24 @@ Example workflow qPCRanalysis
 Jordi Camps
 April 17 2019
 
+## Installation
+
+Install following packages
+
+``` r
+if(!require(tidyverse)) install.packages("tidyverse")
+if(!require(ggpubr)) install.packages("ggpubr") 
+if(!require(lazyeval)) install.packages("lazyeval")
+if(!require(WriteXLS)) install.packages("WriteXLS")
+if(!require(devtools)) install.packages("devtools")
+devtools::install_github("SCIL-leuven/qPCRanalysis")
+```
+
 ## Load packages
 
 ``` r
+library(tidyverse)
 library(readxl)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
 library(qPCRanalysis)
 library(ggpubr)
 library(lazyeval)
@@ -74,8 +85,9 @@ head(qpcr)
     ## 6 WT_1   Ccl6  29.705999374389648
 
 In this example we want to see the difference between different
-genotypes. We will split the Sample Name column in
-two.
+genotypes. We will split the Sample Name column in two to create a
+**sample** column and a **replicate**
+column.
 
 ``` r
 qpcr <- separate(qpcr, col = Sample, into = c("Sample", "Replicate"), sep = "_")
@@ -111,16 +123,6 @@ qpcr$CT <- as.numeric(qpcr$CT)
 
     ## Warning: NAs introduced by coercion
 
-``` r
-str(qpcr)
-```
-
-    ## Classes 'tbl_df', 'tbl' and 'data.frame':    264 obs. of  4 variables:
-    ##  $ Sample   : chr  "WT" "WT" "WT" "WT" ...
-    ##  $ Replicate: chr  "1" "1" "1" "1" ...
-    ##  $ Gene     : chr  "Tnf" "Il1b" "Ccl3" "Ccl4" ...
-    ##  $ CT       : num  33.3 34 NA NA 32.4 ...
-
 ## Calculate Delta CT
 
 To calculate delta CT we use the `calculate_DCT()` function. This
@@ -136,13 +138,15 @@ It will pass a dataframe with three added columns:
 
   - **CT\_hkg** : average CT value of housekeeping genes
   - **DCT** : Delta CT values
-  - **RE** : relative expression to
-hkg
+  - **RE** : relative expression to hkg
 
 <!-- end list -->
 
 ``` r
-qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col = "Sample", gene_col = "Gene")
+qpcr <- calculate_DCT(df = qpcr, 
+                      hkg = c("Rab35", "Rpl13a", "PSma3"), 
+                      sample_col = "Sample", 
+                      gene_col = "Gene")
 ```
 
     ## Joining, by = "Sample"
@@ -162,21 +166,6 @@ qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col
     ##  9 WT     1         Ccl9   29.7   13.0 -16.7  0.00000918 
     ## 10 WT     1         Ccl12  32.3   13.0 -19.4  0.00000145 
     ## # ... with 232 more rows
-
-``` r
-head(qpcr)
-```
-
-    ## # A tibble: 6 x 7
-    ## # Groups:   Sample [1]
-    ##   Sample Replicate Gene     CT CT_hkg   DCT           RE
-    ##   <chr>  <chr>     <chr> <dbl>  <dbl> <dbl>        <dbl>
-    ## 1 WT     1         Tnf    33.3   13.0 -20.3  0.000000761
-    ## 2 WT     1         Il1b   34.0   13.0 -21.0  0.000000463
-    ## 3 WT     1         Ccl3   NA     13.0  NA   NA          
-    ## 4 WT     1         Ccl4   NA     13.0  NA   NA          
-    ## 5 WT     1         Ccl5   32.4   13.0 -19.5  0.00000136 
-    ## 6 WT     1         Ccl6   29.7   13.0 -16.8  0.00000904
 
 ## Statistics
 
@@ -212,7 +201,7 @@ ggplot(qpcr, aes(x = Sample, y = DCT, col = Sample)) +
 
     ## Warning: Removed 26 rows containing non-finite values (stat_compare_means).
 
-![](README_figs/README-unnamed-chunk-9-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-10-1.png)<!-- -->
 
 ## Calculate Delta Delta CT
 
@@ -236,13 +225,16 @@ It will pass a dataframe with seven added columns
   - **DDCTavg** : average Delta Delta CT value
   - **DDCTsem** : standard error to the mean of Delta Delta CT
   - **DDCTmin** : minimum sem value
-  - **DDCTmax** : maximum sem
-value
+  - **DDCTmax** : maximum sem value
 
 <!-- end list -->
 
 ``` r
-ddct <- calculate_DDCT(df = qpcr, gene_col = "Gene", sample_col = "Sample", var_col = "Sample", control = "WT")
+ddct <- calculate_DDCT(df = qpcr, 
+                       gene_col = "Gene", 
+                       sample_col = "Sample", 
+                       var_col = "Sample", 
+                       control = "WT")
 head(ddct)
 ```
 
@@ -265,7 +257,7 @@ ggplot(ddct, aes(x = Sample, y = DDCTavg, fill = Sample)) +
   facet_wrap(~Gene, scales = "free_y")
 ```
 
-![](README_figs/README-unnamed-chunk-11-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-12-1.png)<!-- -->
 
 # Export
 
@@ -280,3 +272,5 @@ group.
 library(WriteXLS)
 WriteXLS(c("qpcr", "stat", "ddct"), "vignette/qpcr.xlsx")
 ```
+
+    ## The Perl script 'WriteXLSX.pl' failed to run successfully.

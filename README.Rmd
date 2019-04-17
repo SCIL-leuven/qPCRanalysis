@@ -9,12 +9,21 @@ output: rmarkdown::github_document
 knitr::opts_chunk$set(fig.path = "README_figs/README-")
 ```
 
+## Installation
+Install following packages
+```{r message=FALSE, warning=FALSE}
+if(!require(tidyverse)) install.packages("tidyverse")
+if(!require(ggpubr)) install.packages("ggpubr") 
+if(!require(lazyeval)) install.packages("lazyeval")
+if(!require(WriteXLS)) install.packages("WriteXLS")
+if(!require(devtools)) install.packages("devtools")
+devtools::install_github("SCIL-leuven/qPCRanalysis")
+```
+
 ## Load packages
 ```{r message=FALSE}
+library(tidyverse)
 library(readxl)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
 library(qPCRanalysis)
 library(ggpubr)
 library(lazyeval)
@@ -40,7 +49,7 @@ colnames(qpcr) <- c("Sample", "Gene", "CT")
 head(qpcr)
 ```
 
-In this example we want to see the difference between different genotypes. We will split the Sample Name column in two.
+In this example we want to see the difference between different genotypes. We will split the Sample Name column in two to create a **sample** column and a **replicate** column.
 ```{r}
 qpcr <- separate(qpcr, col = Sample, into = c("Sample", "Replicate"), sep = "_")
 qpcr <- filter(qpcr, Sample != "Blanc")
@@ -50,7 +59,6 @@ head(qpcr)
 When we check the structure of the data frame we see that the CT column is not numeric, we will change this. In addition, all undetermined values are switched to NA. If desired, these values can be changed to 40.
 ```{r}
 qpcr$CT <- as.numeric(qpcr$CT)
-str(qpcr)
 ```
 
 ## Calculate Delta CT
@@ -68,8 +76,10 @@ It will pass a dataframe with three added columns:
 * __RE__ : relative expression to hkg
 
 ```{r}
-qpcr <- calculate_DCT(df = qpcr, hkg = c("Rab35", "Rpl13a", "PSma3"), sample_col = "Sample", gene_col = "Gene")
-head(qpcr)
+qpcr <- calculate_DCT(df = qpcr, 
+                      hkg = c("Rab35", "Rpl13a", "PSma3"), 
+                      sample_col = "Sample", 
+                      gene_col = "Gene")
 ```
 
 ## Statistics
@@ -107,7 +117,11 @@ It will pass a dataframe with seven added columns
 * __DDCTmax__ : maximum sem value
 
 ```{r}
-ddct <- calculate_DDCT(df = qpcr, gene_col = "Gene", sample_col = "Sample", var_col = "Sample", control = "WT")
+ddct <- calculate_DDCT(df = qpcr, 
+                       gene_col = "Gene", 
+                       sample_col = "Sample", 
+                       var_col = "Sample", 
+                       control = "WT")
 head(ddct)
 ```
 
