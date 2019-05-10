@@ -28,12 +28,14 @@ calculate_DCT <- function(df = qpcr, hkg, sample_col = "Sample", gene_col = "Gen
   temp <- temp %>%
     select_(sample_col, "CT") %>%
     group_by_(sample_col) %>%
-    summarize(CT_hkg = gm_mean(CT, na.rm = TRUE))
+    summarize(hkg = paste(hkg, collapse = "_"),
+              CT_hkg = gm_mean(CT, na.rm = TRUE))
   #add avg hkg to df and calculate delta ct and rel expr
   temp2 <- df[-which(df[[gene_col]] %in% hkg), ]
   print(temp2 %>%
           group_by_(sample_col) %>%
           left_join(temp) %>%
-          mutate(DCT = CT_hkg - CT, RE = 2^DCT)
+          mutate(DCT = CT_hkg - CT,
+                 RE = 2^DCT)
   )
 }
