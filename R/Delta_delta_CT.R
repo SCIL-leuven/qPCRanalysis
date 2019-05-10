@@ -77,5 +77,5 @@ calculate_DDCT <- function(df = qpcr, gene_col = "Gene", sample_col = "Sample", 
     mutate(DDCTmin = DDCTavg - DDCTsem,
            DDCTmax = DDCTavg + DDCTsem) %>%
     #Remove DCTsemperc
-    select(-DCTsemperc)
+    select(-DCTsemperc, -DCTavg, -DCTsem)
 }
