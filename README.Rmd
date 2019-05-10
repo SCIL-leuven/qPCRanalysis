@@ -17,7 +17,7 @@ if(!require(ggpubr)) install.packages("ggpubr")
 if(!require(lazyeval)) install.packages("lazyeval")
 if(!require(WriteXLS)) install.packages("WriteXLS")
 if(!require(devtools)) install.packages("devtools")
-devtools::install_github("SCIL-leuven/qPCRanalysis")
+if(!require(qPCRanalysis)) devtools::install_github("SCIL-leuven/qPCRanalysis")
 ```
 
 ## Load packages
@@ -42,6 +42,8 @@ qpcr <- read_excel("vignette/qPCR_data.xlsx", col_names = TRUE, sheet = 3, skip 
 head(qpcr)
 ```
 
+## Prepare data
+### Select columns
 Now we need to clean the data frame. We will select only the columns that we need and change their names because R does not like spaces inside column names.
 ```{r}
 qpcr <- select(qpcr, c("Sample Name", "Target Name", "CT"))
@@ -49,16 +51,33 @@ colnames(qpcr) <- c("Sample", "Gene", "CT")
 head(qpcr)
 ```
 
-In this example we want to see the difference between different genotypes. We will split the Sample Name column in two to create a **sample** column and a **replicate** column.
+### Switch CT column to numeric object
+When we check the structure of the data frame we see that the CT column is not numeric, we will change this. In addition, all undetermined values are switched to NA. If desired, these values can be changed to 40.
 ```{r}
-qpcr <- separate(qpcr, col = Sample, into = c("Sample", "Replicate"), sep = "_")
-qpcr <- filter(qpcr, Sample != "Blanc")
+#Change CT column to numeric values
+qpcr$CT <- as.numeric(qpcr$CT)
+#Change NA values in CT column to 40
+qpcr[is.na(qpcr$CT), "CT"] <- 40
 head(qpcr)
 ```
 
-When we check the structure of the data frame we see that the CT column is not numeric, we will change this. In addition, all undetermined values are switched to NA. If desired, these values can be changed to 40.
+### Create grouping variable
+In this example we want to see the difference between different genotypes. We will split the Sample Name column in two to create a **sample** column and a **replicate** column.
 ```{r}
-qpcr$CT <- as.numeric(qpcr$CT)
+qpcr <- qpcr %>%
+  #Copy Sample column
+  mutate(temp = Sample) %>%
+  #Split Sample column to create genotype column
+  separate(col = temp, into = c("Genotype", "temp"), sep = "_") %>%
+  #remove temp column
+  select(-temp)
+head(qpcr)
+```
+
+### Remove blanc rows
+As a last step in cleaning the data we will still remove the blanc rows.
+```{r}
+qpcr <- filter(qpcr, Sample != "Blanc")
 ```
 
 ## Calculate Delta CT
@@ -82,22 +101,24 @@ qpcr <- calculate_DCT(df = qpcr,
                       gene_col = "Gene")
 ```
 
-## Statistics
-Perform statistical test between two groups and add information to qpcr data frame. We will do this with the ggpubr package.
+### Statistics
+Perform statistical test between two groups and add information to qpcr data frame. We will do this with the ggpubr package. We want to perform a t-test between healthy and dystrophic samples. Therefore, we put *DCT* as our numeric variable and *Genotype* as our grouping variable. We Specify the method as *t.test*, specify that the data in unpaired and group by *Gene*.
 ```{r}
-stat <- compare_means(DCT ~ Sample, qpcr, method = "t.test", paired = FALSE, group.by = "Gene")
+stat <- compare_means(DCT ~ Genotype, qpcr, method = "t.test", paired = FALSE, group.by = "Gene")
 head(stat)
 ```
 
 ### Plot
 ```{r}
-ggplot(qpcr, aes(x = Sample, y = DCT, col = Sample)) +
+ggplot(qpcr, aes(x = Genotype, y = DCT, col = Genotype)) +
   geom_boxplot() +
   facet_wrap(~Gene, scales = "free_y") +
   stat_compare_means(method = "t.test", label = "p.signif", label.x = 1.5)
 ```
 
 ## Calculate Delta Delta CT
+If you have unpaired data, the only way to calculate a delta delta CT or fold change is to take an average of your sample and compate the fold change to another group that you are referring to, plus also correctly propagate your error.
+
 To calculate Delta Delta CT use the `calculate_DDCT()` function. This function  can only be run after the `calculate_DCT()` function is used and requires five argeuments:
 
 * __df__: dataframe structured like the proposed data file, has to contain DCT and RE column
@@ -108,9 +129,6 @@ To calculate Delta Delta CT use the `calculate_DDCT()` function. This function  
 
 It will pass a dataframe with seven added columns
 
-* __DCTavg__ : average Delta CT value
-* __DCTsem__ : s.e.m. of Delta CT
-* __DCTsemperc__ : percentage of s.e.m.
 * __DDCTavg__ : average Delta Delta CT value
 * __DDCTsem__ : standard error to the mean of Delta Delta CT
 * __DDCTmin__ : minimum sem value
@@ -120,20 +138,20 @@ It will pass a dataframe with seven added columns
 ddct <- calculate_DDCT(df = qpcr, 
                        gene_col = "Gene", 
                        sample_col = "Sample", 
-                       var_col = "Sample", 
+                       var_col = "Genotype", 
                        control = "WT")
 head(ddct)
 ```
 
 ### Plot
 ```{r}
-ggplot(ddct, aes(x = Sample, y = DDCTavg, fill = Sample)) +
+ggplot(ddct, aes(x = Genotype, y = DDCTavg, fill = Genotype)) +
   geom_col() +
   geom_errorbar(aes(ymin = DDCTmin, ymax = DDCTmax), width = 0.1, data = ddct) +
   facet_wrap(~Gene, scales = "free_y")
 ```
 
-# Export
+## Export
 At any given point you can export the data frame to an excel file with this function. Here we will export the data in an excel with three sheets. The first sheet will contain your raw values and normalized delta CT values. The second sheet will contain your statistics. The third sheet will contain all the values normalized to your control group.
 ```{r}
 library(WriteXLS)
