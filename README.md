@@ -1,4 +1,4 @@
-Example workflow qPCRanalysis
+qPCRanalysis
 ================
 Jordi Camps
 May 10 2019
@@ -31,12 +31,12 @@ library(lazyeval)
 We load the data with the **read\_excel()** function of the readxl
 package. The data should consist of at least 4 columns:
 
-  - **Sample** : the biological variability in your data set like a
-    disease, different timepoints, perturbation …
-  - **Replicate** : invidividual names per sample
+  - **Sample** : invidividual names per sample
   - **Gene** : the gene names of your primers
-  - **CT** : the raw CT
-values
+  - **CT** : the raw CT values
+  - **A grouping variable** : the biological variability in your data
+    set like a disease, different timepoints, perturbation
+…
 
 <!-- end list -->
 
@@ -118,7 +118,7 @@ head(qpcr)
     ## 5 WT_1   Ccl5   32.4
     ## 6 WT_1   Ccl6   29.7
 
-### Create grouping variable
+### Create a grouping variable
 
 In this example we want to see the difference between different
 genotypes. We will split the Sample Name column in two to create a
@@ -173,6 +173,7 @@ function requires four arguments:
 
 It will pass a dataframe with three added columns:
 
+  - **hkg** : names of housekeeping genes used for normalizing
   - **CT\_hkg** : average CT value of housekeeping genes
   - **DCT** : Delta CT values
   - **RE** : relative expression to hkg

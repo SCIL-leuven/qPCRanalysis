@@ -1,5 +1,5 @@
 ---
-title: "Example workflow qPCRanalysis"
+title: "qPCRanalysis"
 author: "Jordi Camps"
 date: '`r format(Sys.Date(), "%B %d %Y")`'
 output: rmarkdown::github_document
@@ -32,10 +32,10 @@ library(lazyeval)
 ## Load data
 We load the data with the **read_excel()** function of the readxl package. The data should consist of at least 4 columns:
 
-* __Sample__ : the biological variability in your data set like a disease, different timepoints, perturbation ...
-* __Replicate__ : invidividual names per sample
+* __Sample__ : invidividual names per sample
 * __Gene__ : the gene names of your primers
 * __CT__ : the raw CT values
+* __A grouping variable__ : the biological variability in your data set like a disease, different timepoints, perturbation ...
 
 ```{r message=FALSE, warning=FALSE}
 qpcr <- read_excel("vignette/qPCR_data.xlsx", col_names = TRUE, sheet = 3, skip = 35)
@@ -61,7 +61,7 @@ qpcr[is.na(qpcr$CT), "CT"] <- 40
 head(qpcr)
 ```
 
-### Create grouping variable
+### Create a grouping variable
 In this example we want to see the difference between different genotypes. We will split the Sample Name column in two to create a **sample** column and a **replicate** column.
 ```{r}
 qpcr <- qpcr %>%
@@ -90,6 +90,7 @@ To calculate delta CT we use the `calculate_DCT()` function. This function requi
 
 It will pass a dataframe with three added columns: 
 
+* __hkg__ : names of housekeeping genes used for normalizing
 * __CT_hkg__ : average CT value of housekeeping genes
 * __DCT__ : Delta CT values
 * __RE__ : relative expression to hkg
@@ -103,6 +104,7 @@ qpcr <- calculate_DCT(df = qpcr,
 
 ### Statistics
 Perform statistical test between two groups and add information to qpcr data frame. We will do this with the ggpubr package. We want to perform a t-test between healthy and dystrophic samples. Therefore, we put *DCT* as our numeric variable and *Genotype* as our grouping variable. We Specify the method as *t.test*, specify that the data in unpaired and group by *Gene*.
+
 ```{r}
 stat <- compare_means(DCT ~ Genotype, qpcr, method = "t.test", paired = FALSE, group.by = "Gene")
 head(stat)
