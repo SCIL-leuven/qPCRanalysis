@@ -71,9 +71,11 @@ calculate_DDCT <- function(df = qpcr, gene_col = "Gene", sample_col = "Sample", 
   #Unite genotype again in one column
   temp <- temp %>%
     gather(key = variable, value = value, -gene_col) %>%
-    tidyr::separate(col = variable, into = c(var_col, "temp")) %>%
+    tidyr::separate(col = variable, into = c(var_col, "temp"), sep = "[.]") %>%
     spread(key = temp, value = value) %>%
     #Calculate ymin and ymax
     mutate(DDCTmin = DDCTavg - DDCTsem,
-           DDCTmax = DDCTavg + DDCTsem)
+           DDCTmax = DDCTavg + DDCTsem) %>%
+    #Remove DCTsemperc
+    select(-DCTsemperc)
 }
