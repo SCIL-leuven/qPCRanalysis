@@ -74,12 +74,6 @@ qpcr <- qpcr %>%
 head(qpcr)
 ```
 
-### Remove blanc rows
-As a last step in cleaning the data we will still remove the blanc rows.
-```{r}
-qpcr <- filter(qpcr, Sample != "Blanc")
-```
-
 ## Calculate Delta CT
 To calculate delta CT we use the `calculate_DCT()` function. This function requires four arguments:
 
@@ -97,7 +91,7 @@ It will pass a dataframe with three added columns:
 
 ```{r}
 qpcr <- calculate_DCT(df = qpcr, 
-                      hkg = c("Rab35", "Rpl13a", "Psma3"), 
+                      hkg = c("Rpl13a"), 
                       sample_col = "Sample", 
                       gene_col = "Gene")
 ```
