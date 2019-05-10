@@ -1,7 +1,7 @@
 Package: qPCRanalysis
 Type: Package
 Title: Help with qPCR analysis
-Version: 0.2.0
+Version: 0.2.1
 Author: Jordi Camps
 Maintainer: Jordi Camps <jordi.camps@kuleuven.be>
 Description: More about what it does (maybe more than one line)
